@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "446453708339",
+    "project_id": "mediaharbor-f6e33",
+    "storage_bucket": "mediaharbor-f6e33.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:446453708339:android:63f777cd5680f2c25e9546",
+        "android_client_info": {
+          "package_name": "com.example.mediaharbor"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAxqkyH3wPjk5aZqikp3_T_evPXhHxCtAo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
