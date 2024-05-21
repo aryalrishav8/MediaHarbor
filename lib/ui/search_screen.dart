@@ -3,6 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:mediaharbor/ui/navigatepost.dart';
 import 'package:mediaharbor/ui/profile_screen.dart';
+import 'package:mediaharbor/ui/recommend_page.dart';
 import 'navigate_profile.dart';
 import 'package:mediaharbor/widgets/bottomnavbar.dart';
 import 'home_page.dart';
@@ -302,6 +303,11 @@ class _SearchScreenState extends State<SearchScreen> {
             Navigator.push(
               context,
               MaterialPageRoute(builder: (context) => ProfilePage()),
+            );
+          } else if (index == 3) {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => RecommendationScreen()),
             );
           }
         },

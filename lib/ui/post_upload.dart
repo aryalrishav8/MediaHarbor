@@ -130,17 +130,44 @@ class _PostUploadPageState extends State<PostUploadPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Upload Image'),
-      ),
-      body: Center(
-        child: isUploading
-            ? CircularProgressIndicator()
-            : ElevatedButton(
-                onPressed: () => addImageToFirebase(context),
-                child: Text('Upload Image'),
-              ),
-      ),
-    );
+        appBar: AppBar(
+          title: const Text('Upload Image'),
+        ),
+        body: Center(
+          child: isUploading
+              ? const CircularProgressIndicator()
+              : GestureDetector(
+                  onTap: () => addImageToFirebase(context),
+                  child: Container(
+                    height: 175,
+                    width: 175,
+                    padding: const EdgeInsets.symmetric(
+                        vertical: 12.0, horizontal: 24.0),
+                    decoration: BoxDecoration(
+                      color: const Color.fromARGB(255, 235, 228, 207),
+                      borderRadius:
+                          BorderRadius.circular(8.0), // Rounded corners
+                    ),
+                    child: const Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(
+                          Icons.upload,
+                          size: 80,
+                          color: Color.fromARGB(255, 90, 90, 90),
+                        ),
+                        Text(
+                          'Upload Image',
+                          style: TextStyle(
+                            color:
+                                Color.fromARGB(255, 90, 90, 90), // Text color
+                            fontSize: 18.0, // Text size
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+        ));
   }
 }

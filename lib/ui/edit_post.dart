@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:mediaharbor/helper/audio_play.dart';
 
-
 class EditPostScreen extends StatefulWidget {
   final String postId;
   final String imageUrl; // Replace with actual image/audio URL
@@ -65,7 +64,7 @@ class _EditPostScreenState extends State<EditPostScreen> {
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             if (widget.postType == 'Audio')
               AudioPlayerWidget(audioUrl: widget.imageUrl),
@@ -93,7 +92,16 @@ class _EditPostScreenState extends State<EditPostScreen> {
                 String updatedCaption = _captionController.text;
                 _updateCaption(updatedCaption);
               },
-              child: Text('Save Caption'),
+              style: ElevatedButton.styleFrom(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(16.0),
+                ),
+                padding: EdgeInsets.symmetric(horizontal: 60, vertical: 15),
+              ),
+              child: Text(
+                'Save Caption',
+                style: TextStyle(fontSize: 16),
+              ),
             ),
           ],
         ),

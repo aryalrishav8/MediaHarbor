@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/widgets.dart';
+import 'package:mediaharbor/ui/recommend_page.dart';
 import 'login_page.dart';
 import 'profile_screen.dart';
 import 'package:mediaharbor/widgets/bottomnavbar.dart';
@@ -267,14 +268,14 @@ class _HomePageState extends State<HomePage> {
                   child: Container(
                     decoration: BoxDecoration(
                       border: Border.all(color: Colors.grey),
-                      borderRadius: BorderRadius.circular(12),
+                      borderRadius: BorderRadius.circular(4),
                     ),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Padding(
                           padding: const EdgeInsets.symmetric(
-                              horizontal: 8.0, vertical: 8.0),
+                              horizontal: 12.0, vertical: 4.0),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
@@ -410,24 +411,40 @@ class _HomePageState extends State<HomePage> {
                             ],
                           ),
                         ),
+                        // Padding(
+                        //   padding: const EdgeInsets.all(8.0),
+                        //   child: Center(
+                        //     child: GestureDetector(
+                        //       child: Container(
+                        //         height: postType == 'Image' ? 300 : 100,
+                        //         decoration: const BoxDecoration(
+                        //           borderRadius: BorderRadius.vertical(
+                        //             top: Radius.circular(12),
+                        //           ),
+                        //         ),
+                        //         child: postType == 'Image'
+                        //             ? Image.network(
+                        //                 postImageUrl,
+                        //                 fit: BoxFit.cover,
+                        //               )
+                        //             : AudioPlayerWidget(audioUrl: postImageUrl),
+                        //       ),
+                        //       onTap: () {
+                        //         Navigator.push(
+                        //           context,
+                        //           MaterialPageRoute(
+                        //             builder: (context) =>
+                        //                 SinglePostScreen(postId: postId),
+                        //           ),
+                        //         );
+                        //       },
+                        //     ),
+                        //   ),
+                        // ),
                         Padding(
-                          padding: const EdgeInsets.all(6.0),
+                          padding: const EdgeInsets.all(12.0),
                           child: Center(
                             child: GestureDetector(
-                              child: Container(
-                                height: postType == 'Image' ? 300 : 100,
-                                decoration: const BoxDecoration(
-                                  borderRadius: BorderRadius.vertical(
-                                    top: Radius.circular(12),
-                                  ),
-                                ),
-                                child: postType == 'Image'
-                                    ? Image.network(
-                                        postImageUrl,
-                                        fit: BoxFit.cover,
-                                      )
-                                    : AudioPlayerWidget(audioUrl: postImageUrl),
-                              ),
                               onTap: () {
                                 Navigator.push(
                                   context,
@@ -437,41 +454,32 @@ class _HomePageState extends State<HomePage> {
                                   ),
                                 );
                               },
+                              child: Container(
+                                height: postType == 'Image' ? 300 : 100,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.vertical(
+                                      top: Radius.circular(4),
+                                      bottom: Radius.circular(4)),
+                                  color: postType == 'Image'
+                                      ? Color.fromARGB(255, 56, 54, 54)
+                                      : Colors.white,
+                                ),
+                                child: Center(
+                                  child: postType == 'Image'
+                                      ? Image.network(
+                                          postImageUrl,
+                                          fit: BoxFit.cover,
+                                        )
+                                      : AudioPlayerWidget(
+                                          audioUrl: postImageUrl),
+                                ),
+                              ),
                             ),
                           ),
                         ),
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Text(
-                            postCaption,
-                            style: const TextStyle(fontWeight: FontWeight.bold),
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                          child: StreamBuilder<DocumentSnapshot>(
-                            stream: _firestore
-                                .collection('posts')
-                                .doc(postId)
-                                .snapshots(),
-                            builder: (context, snapshot) {
-                              if (snapshot.connectionState ==
-                                  ConnectionState.waiting) {
-                                return const CircularProgressIndicator();
-                              } else if (snapshot.hasError) {
-                                return Text('Error: ${snapshot.error}');
-                              } else {
-                                List<dynamic> likes =
-                                    (snapshot.data!.data() as Map)['likes'] ??
-                                        [];
-                                int likesCount = likes.length;
-                                return Text('$likesCount Likes');
-                              }
-                            },
-                          ),
-                        ),
+
                         Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          mainAxisAlignment: MainAxisAlignment.start,
                           children: [
                             StreamBuilder<Map<String, dynamic>>(
                               stream: getLikeStream(
@@ -512,7 +520,40 @@ class _HomePageState extends State<HomePage> {
                           ],
                         ),
                         Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 12.0, vertical: 4.0),
+                          child: StreamBuilder<DocumentSnapshot>(
+                            stream: _firestore
+                                .collection('posts')
+                                .doc(postId)
+                                .snapshots(),
+                            builder: (context, snapshot) {
+                              if (snapshot.connectionState ==
+                                  ConnectionState.waiting) {
+                                return const CircularProgressIndicator();
+                              } else if (snapshot.hasError) {
+                                return Text('Error: ${snapshot.error}');
+                              } else {
+                                List<dynamic> likes =
+                                    (snapshot.data!.data() as Map)['likes'] ??
+                                        [];
+                                int likesCount = likes.length;
+                                return Text('$likesCount Likes');
+                              }
+                            },
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 12.0, vertical: 4.0),
+                          child: Text(
+                            postCaption,
+                            style: const TextStyle(fontWeight: FontWeight.bold),
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 12.0, vertical: 4.0),
                           child: Text(
                             _getFormattedDate(postDate),
                             style: const TextStyle(color: Colors.grey),
@@ -541,6 +582,11 @@ class _HomePageState extends State<HomePage> {
             Navigator.push(
               context,
               MaterialPageRoute(builder: (context) => const SearchScreen()),
+            );
+          } else if (index == 3) {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => RecommendationScreen()),
             );
           }
         },

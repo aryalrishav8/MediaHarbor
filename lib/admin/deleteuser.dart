@@ -16,8 +16,8 @@ class DeleteUserPage extends StatelessWidget {
             _showEmailDialog(context);
           },
           child: Container(
-            width: 150,
-            height: 150,
+            width: 175,
+            height: 175,
             alignment: Alignment.center,
             color: Colors.blue,
             child: const Text(

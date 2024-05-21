@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mediaharbor/helper/post_operations.dart';
 import 'package:mediaharbor/ui/edit_post.dart';
+import 'package:mediaharbor/ui/recommend_page.dart';
 import 'package:mediaharbor/ui/search_screen.dart';
 import 'package:mediaharbor/widgets/bottomnavbar.dart';
 import 'package:mediaharbor/widgets/uploadoptions.dart';
@@ -67,7 +68,7 @@ class _ProfilePageState extends State<ProfilePage> {
           .get();
       if (userSnapshot.exists) {
         Map<String, dynamic>? userData =
-            userSnapshot.data() as Map<String, dynamic>?; 
+            userSnapshot.data() as Map<String, dynamic>?;
         if (userData != null && userData.containsKey('profilePictureUrl')) {
           setState(() {
             _username = userData['username'];
@@ -75,7 +76,7 @@ class _ProfilePageState extends State<ProfilePage> {
           });
         } else {
           setState(() {
-            _username = userData?['username'] ?? "Error"; 
+            _username = userData?['username'] ?? "Error";
             _profilePictureUrl = '';
           });
         }
@@ -85,6 +86,19 @@ class _ProfilePageState extends State<ProfilePage> {
           _profilePictureUrl = '';
         });
       }
+    }
+  }
+
+  String _getFormattedDate(DateTime postDate) {
+    Duration difference = DateTime.now().difference(postDate);
+    if (difference.inDays > 0) {
+      return '${difference.inDays}d ago';
+    } else if (difference.inHours > 0) {
+      return '${difference.inHours}h ago';
+    } else if (difference.inMinutes > 0) {
+      return '${difference.inMinutes}m ago';
+    } else {
+      return 'Just now';
     }
   }
 
@@ -140,9 +154,8 @@ class _ProfilePageState extends State<ProfilePage> {
                           fontSize: 26,
                           fontWeight: FontWeight.bold,
                         ),
-                        overflow: TextOverflow
-                            .ellipsis, 
-                        maxLines: 1, 
+                        overflow: TextOverflow.ellipsis,
+                        maxLines: 1,
                       ),
                       const SizedBox(height: 8),
                       StreamBuilder<int>(
@@ -239,13 +252,16 @@ class _ProfilePageState extends State<ProfilePage> {
                             String postType = post['type'];
                             String postImageUrl = post['path'];
                             String postCaption = post['caption'] ?? '';
+                            DateTime postDate =
+                                (post['date'] as Timestamp).toDate();
+
                             double postHeight =
                                 postType == 'Image' ? 300.0 : 150.0;
                             if (postType == 'Image') {
                               return Container(
                                 decoration: BoxDecoration(
                                   border: Border.all(color: Colors.grey),
-                                  borderRadius: BorderRadius.circular(12.0),
+                                  borderRadius: BorderRadius.circular(4.0),
                                 ),
                                 child: Padding(
                                   padding: const EdgeInsets.all(16.0),
@@ -271,10 +287,16 @@ class _ProfilePageState extends State<ProfilePage> {
                                         ),
                                         Text(
                                           postCaption,
-                                          style: TextStyle(fontSize: 16.0),
+                                          style:
+                                              const TextStyle(fontSize: 16.0),
                                         ),
                                         const SizedBox(
                                           height: 10,
+                                        ),
+                                        Text(
+                                          _getFormattedDate(postDate),
+                                          style: const TextStyle(
+                                              color: Colors.grey),
                                         ),
                                       ],
                                     ),
@@ -285,7 +307,7 @@ class _ProfilePageState extends State<ProfilePage> {
                               return Container(
                                 decoration: BoxDecoration(
                                   border: Border.all(color: Colors.grey),
-                                  borderRadius: BorderRadius.circular(12.0),
+                                  borderRadius: BorderRadius.circular(4.0),
                                 ),
                                 child: Padding(
                                   padding: const EdgeInsets.all(16.0),
@@ -306,15 +328,21 @@ class _ProfilePageState extends State<ProfilePage> {
                                             audioUrl: postImageUrl,
                                           ),
                                         ),
-                                        Center(
-                                          child: Text(
-                                            postCaption,
-                                            style:
-                                                const TextStyle(fontSize: 16.0),
-                                          ),
+                                        const SizedBox(
+                                          height: 8.0,
+                                        ),
+                                        Text(
+                                          postCaption,
+                                          style:
+                                              const TextStyle(fontSize: 16.0),
                                         ),
                                         const SizedBox(
                                           height: 10,
+                                        ),
+                                        Text(
+                                          _getFormattedDate(postDate),
+                                          style: const TextStyle(
+                                              color: Colors.grey),
                                         ),
                                       ],
                                     ),
@@ -354,6 +382,11 @@ class _ProfilePageState extends State<ProfilePage> {
             Navigator.push(
               context,
               MaterialPageRoute(builder: (context) => SearchScreen()),
+            );
+          } else if (index == 3) {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => RecommendationScreen()),
             );
           }
         },
